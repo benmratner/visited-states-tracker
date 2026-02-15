@@ -93,56 +93,6 @@ app.delete('/api/states/:stateId', (req, res) => {
   }
 });
 
-// Export data as JSON
-app.get('/api/export', (req, res) => {
-  try {
-    const stmt = db.prepare('SELECT state_id, status, updated_at FROM state_visits ORDER BY state_id');
-    const rows = stmt.all();
-    
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', 'attachment; filename=state-tracker-backup.json');
-    res.json({
-      exported_at: new Date().toISOString(),
-      data: rows
-    });
-  } catch (error) {
-    console.error('Error exporting data:', error);
-    res.status(500).json({ error: 'Failed to export data' });
-  }
-});
-
-// Import data from JSON
-app.post('/api/import', (req, res) => {
-  try {
-    const { data } = req.body;
-    
-    if (!data || !Array.isArray(data)) {
-      return res.status(400).json({ error: 'Invalid import data format' });
-    }
-    
-    const stmt = db.prepare(`
-      INSERT INTO state_visits (state_id, status, updated_at)
-      VALUES (?, ?, CURRENT_TIMESTAMP)
-      ON CONFLICT(state_id) DO UPDATE SET
-        status = excluded.status,
-        updated_at = CURRENT_TIMESTAMP
-    `);
-    
-    const insertMany = db.transaction((states) => {
-      for (const state of states) {
-        stmt.run(state.state_id, state.status);
-      }
-    });
-    
-    insertMany(data);
-    
-    res.json({ success: true, imported: data.length });
-  } catch (error) {
-    console.error('Error importing data:', error);
-    res.status(500).json({ error: 'Failed to import data' });
-  }
-});
-
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🗺️  State Tracker server running at http://0.0.0.0:${PORT}`);

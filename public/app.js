@@ -80,65 +80,6 @@ async function saveState(stateId, status) {
   }
 }
 
-// Export data
-document.getElementById('exportBtn').addEventListener('click', async () => {
-  try {
-    const response = await fetch(`${API_URL}/export`);
-    if (!response.ok) throw new Error('Export failed');
-    
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `state-tracker-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-    
-    showStatus('Data exported successfully!');
-  } catch (error) {
-    console.error('Error exporting:', error);
-    showStatus('Failed to export data', true);
-  }
-});
-
-// Import data
-document.getElementById('importBtn').addEventListener('click', () => {
-  document.getElementById('importFile').click();
-});
-
-document.getElementById('importFile').addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  try {
-    const text = await file.text();
-    const json = JSON.parse(text);
-    
-    if (!json.data || !Array.isArray(json.data)) {
-      throw new Error('Invalid file format');
-    }
-
-    const response = await fetch(`${API_URL}/import`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ data: json.data })
-    });
-
-    if (!response.ok) throw new Error('Import failed');
-
-    await loadData();
-    loadMap();
-    showStatus(`Successfully imported ${json.data.length} states!`);
-  } catch (error) {
-    console.error('Error importing:', error);
-    showStatus('Failed to import data. Check file format.', true);
-  }
-
-  e.target.value = '';
-});
-
 // Load SVG paths from the STATE_PATHS object
 function loadMap() {
   // Clear existing paths
