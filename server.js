@@ -93,6 +93,19 @@ app.delete('/api/states/:stateId', (req, res) => {
   }
 });
 
+// Reset all data
+app.post('/api/reset', (req, res) => {
+  try {
+    const stmt = db.prepare('DELETE FROM state_visits');
+    stmt.run();
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error resetting data:', error);
+    res.status(500).json({ error: 'Failed to reset data' });
+  }
+});
+
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🗺️  State Tracker server running at http://0.0.0.0:${PORT}`);

@@ -22,6 +22,12 @@ const mapSvg = document.getElementById('map');
 const statusMessage = document.getElementById('statusMessage');
 const loadingSpinner = document.getElementById('loadingSpinner');
 const mainContent = document.getElementById('mainContent');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsMenu = document.getElementById('settingsMenu');
+const resetDataBtn = document.getElementById('resetDataBtn');
+const modalOverlay = document.getElementById('modalOverlay');
+const cancelBtn = document.getElementById('cancelBtn');
+const confirmResetBtn = document.getElementById('confirmResetBtn');
 
 // Show/hide loading state
 function setLoading(isLoading) {
@@ -168,8 +174,54 @@ dropdown.addEventListener('click', async (e) => {
 });
 
 // Close dropdown when clicking outside
-document.addEventListener('click', () => {
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#settingsBtn')) {
+    settingsMenu.classList.remove('show');
+  }
   dropdown.classList.remove('show');
+});
+
+// Settings menu toggle
+settingsBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  settingsMenu.classList.toggle('show');
+});
+
+// Reset data button
+resetDataBtn.addEventListener('click', () => {
+  settingsMenu.classList.remove('show');
+  modalOverlay.classList.add('show');
+});
+
+// Cancel modal
+cancelBtn.addEventListener('click', () => {
+  modalOverlay.classList.remove('show');
+});
+
+// Close modal when clicking overlay
+modalOverlay.addEventListener('click', (e) => {
+  if (e.target === modalOverlay) {
+    modalOverlay.classList.remove('show');
+  }
+});
+
+// Confirm reset
+confirmResetBtn.addEventListener('click', async () => {
+  try {
+    const response = await fetch(`${API_URL}/reset`, {
+      method: 'POST'
+    });
+
+    if (!response.ok) throw new Error('Reset failed');
+
+    stateData = {};
+    loadMap();
+    modalOverlay.classList.remove('show');
+    showStatus('All data has been reset');
+  } catch (error) {
+    console.error('Error resetting data:', error);
+    showStatus('Failed to reset data', true);
+  }
 });
 
 function updateStats() {
