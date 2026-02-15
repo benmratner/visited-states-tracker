@@ -474,6 +474,7 @@ input[type="file"] {
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .modal .btn-secondary {

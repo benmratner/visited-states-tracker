@@ -32,6 +32,7 @@ const customizeColorsBtn = document.getElementById('customizeColorsBtn');
 const colorModalOverlay = document.getElementById('colorModalOverlay');
 const cancelColorBtn = document.getElementById('cancelColorBtn');
 const saveColorsBtn = document.getElementById('saveColorsBtn');
+const resetToDefaultBtn = document.getElementById('resetToDefaultBtn');
 const colorBen = document.getElementById('colorBen');
 const colorMatt = document.getElementById('colorMatt');
 const colorBoth = document.getElementById('colorBoth');
@@ -329,6 +330,14 @@ colorModalOverlay.addEventListener('click', (e) => {
   if (e.target === colorModalOverlay) {
     colorModalOverlay.classList.remove('show');
   }
+});
+
+// Reset to default colors
+resetToDefaultBtn.addEventListener('click', () => {
+  colorBen.value = DEFAULT_COLORS.ben;
+  colorMatt.value = DEFAULT_COLORS.matt;
+  colorBoth.value = DEFAULT_COLORS.both;
+  colorTogether.value = DEFAULT_COLORS.together;
 });
 
 // Save custom colors
