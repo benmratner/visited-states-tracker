@@ -820,49 +820,37 @@ svg {
 
 .sort-controls {
   margin-bottom: var(--spacing-md);
-  padding: var(--spacing-md);
-  background: var(--bg-primary);
-  border: 1px solid rgba(44, 51, 51, 0.1);
-  border-radius: var(--radius-md);
   display: none;
+  gap: var(--spacing-sm);
 }
 
 .sort-controls.show {
-  display: block;
-}
-
-.sort-label {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--spacing-xs);
-}
-
-.sort-options {
   display: flex;
-  gap: var(--spacing-md);
 }
 
-.sort-option {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  cursor: pointer;
-  font-size: 0.9375rem;
-  color: var(--text-secondary);
+.sort-chip {
+  padding: var(--spacing-xs) var(--spacing-md);
+  background: var(--bg-primary);
+  border: 1px solid rgba(44, 51, 51, 0.15);
+  border-radius: 100px;
+  font-size: 0.875rem;
   font-weight: 500;
-}
-
-.sort-option input[type="radio"] {
+  color: var(--text-secondary);
   cursor: pointer;
-  accent-color: var(--accent-primary);
+  transition: all 0.2s var(--transition-fast);
+  font-family: var(--font-body);
 }
 
-.sort-option:hover {
+.sort-chip:hover {
+  background: rgba(44, 51, 51, 0.03);
+  border-color: rgba(44, 51, 51, 0.25);
   color: var(--text-primary);
+}
+
+.sort-chip.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: white;
 }
 
 .states-list {
@@ -938,20 +926,6 @@ svg {
   letter-spacing: 0.01em;
 }
 
-.visit-type-header {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: var(--spacing-md);
-  margin-bottom: var(--spacing-xs);
-  padding-left: var(--spacing-xs);
-}
-
-.visit-type-header:first-child {
-  margin-top: 0;
-}
 
 /* ==========================================
    Responsive Design

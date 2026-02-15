@@ -557,7 +557,9 @@ function showStatesList(category) {
   if (category === 'user1' || category === 'user2') {
     sortControls.classList.add('show');
     // Reset to alphabetical sort
-    document.querySelector('input[name="stateSort"][value="alphabetical"]').checked = true;
+    document.querySelectorAll('.sort-chip').forEach(chip => {
+      chip.classList.toggle('active', chip.dataset.sort === 'alphabetical');
+    });
   } else {
     sortControls.classList.remove('show');
   }
@@ -575,44 +577,24 @@ function renderStatesList(sortOrder) {
   if (sortOrder === 'alphabetical') {
     // Sort alphabetically
     states.sort((a, b) => a.name.localeCompare(b.name));
-
-    statesList.innerHTML = '';
-    states.forEach(state => {
-      statesList.appendChild(createStateItem(state));
-    });
   } else if (sortOrder === 'visitType') {
-    // Group by visit type
-    const grouped = {
-      Individual: states.filter(s => s.visitType === 'Individual'),
-      Separately: states.filter(s => s.visitType === 'Separately'),
-      Together: states.filter(s => s.visitType === 'Together')
-    };
-
-    // Sort each group alphabetically
-    Object.values(grouped).forEach(group => {
-      group.sort((a, b) => a.name.localeCompare(b.name));
-    });
-
-    statesList.innerHTML = '';
-
-    // Render each group
-    ['Individual', 'Separately', 'Together'].forEach(type => {
-      if (grouped[type].length > 0) {
-        const header = document.createElement('div');
-        header.className = 'visit-type-header';
-        header.textContent = `${type} (${grouped[type].length})`;
-        statesList.appendChild(header);
-
-        grouped[type].forEach(state => {
-          statesList.appendChild(createStateItem(state, true));
-        });
-      }
+    // Sort by visit type, then alphabetically within each type
+    const typeOrder = { Individual: 1, Separately: 2, Together: 3 };
+    states.sort((a, b) => {
+      const typeComparison = typeOrder[a.visitType] - typeOrder[b.visitType];
+      if (typeComparison !== 0) return typeComparison;
+      return a.name.localeCompare(b.name);
     });
   }
+
+  statesList.innerHTML = '';
+  states.forEach(state => {
+    statesList.appendChild(createStateItem(state));
+  });
 }
 
 // Create a state item element
-function createStateItem(state, hideVisitType = false) {
+function createStateItem(state) {
   const stateItem = document.createElement('div');
   stateItem.className = 'state-item';
 
@@ -621,7 +603,7 @@ function createStateItem(state, hideVisitType = false) {
   stateName.textContent = state.name;
   stateItem.appendChild(stateName);
 
-  if (state.visitType && !hideVisitType) {
+  if (state.visitType) {
     const visitType = document.createElement('span');
     visitType.className = 'visit-type';
     visitType.textContent = state.visitType;
@@ -650,9 +632,14 @@ statesListModalOverlay.addEventListener('click', (e) => {
 });
 
 // Handle sort option changes
-document.querySelectorAll('input[name="stateSort"]').forEach(radio => {
-  radio.addEventListener('change', (e) => {
-    renderStatesList(e.target.value);
+document.querySelectorAll('.sort-chip').forEach(chip => {
+  chip.addEventListener('click', (e) => {
+    // Update active state
+    document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+
+    // Re-render list with new sort order
+    renderStatesList(chip.dataset.sort);
   });
 });
 

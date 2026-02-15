@@ -142,17 +142,8 @@
       <h2 id="statesListTitle">Visited States</h2>
 
       <div class="sort-controls" id="sortControls">
-        <label class="sort-label">Sort by:</label>
-        <div class="sort-options">
-          <label class="sort-option">
-            <input type="radio" name="stateSort" value="alphabetical" checked>
-            <span>Alphabetical</span>
-          </label>
-          <label class="sort-option">
-            <input type="radio" name="stateSort" value="visitType">
-            <span>Visit Type</span>
-          </label>
-        </div>
+        <button class="sort-chip active" data-sort="alphabetical">Alphabetical</button>
+        <button class="sort-chip" data-sort="visitType">Visit Type</button>
       </div>
 
       <div class="states-list" id="statesList"></div>
