@@ -37,9 +37,12 @@ h1 {
   letter-spacing: -0.5px;
 }
 
-.settings-btn {
+.settings-wrapper {
   position: absolute;
   right: 0;
+}
+
+.settings-btn {
   background: rgba(255, 255, 255, 0.2);
   border: none;
   width: 44px;
@@ -101,15 +104,7 @@ h1 {
   display: none;
 }
 
-/* Action Buttons */
-.actions {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-
+/* Buttons */
 .btn {
   padding: 12px 24px;
   background: white;
@@ -364,9 +359,9 @@ input[type="file"] {
 
 /* Settings Menu */
 .settings-menu {
-  position: fixed;
-  top: 80px;
-  right: 20px;
+  position: absolute;
+  top: 54px;
+  right: 0;
   background: white;
   border-radius: 10px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -490,29 +485,16 @@ input[type="file"] {
     height: 40px;
   }
 
-  .settings-menu {
-    right: 15px;
-  }
-
   .map-container {
     padding: 30px 20px;
   }
-  
+
   .stats {
     grid-template-columns: 1fr;
   }
 
   .stat-card .count {
     font-size: 36px;
-  }
-
-  .actions {
-    gap: 8px;
-  }
-
-  .btn {
-    padding: 10px 18px;
-    font-size: 14px;
   }
 }
 
