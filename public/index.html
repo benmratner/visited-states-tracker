@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>US State Travel Tracker</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>US State Travel Tracker</h1>
+    
+    <!-- Loading Spinner -->
+    <div class="loading-container" id="loadingSpinner">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading your travel data...</div>
+    </div>
+
+    <!-- Main Content (hidden until loaded) -->
+    <div id="mainContent" class="hidden">
+      <div class="status-message hidden" id="statusMessage"></div>
+
+      <div class="actions">
+        <button class="btn" id="exportBtn">Export Data</button>
+        <button class="btn btn-secondary" id="importBtn">Import Data</button>
+        <input type="file" id="importFile" accept=".json">
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <h3><span class="color-indicator" style="background: #ffd700;"></span>Ben</h3>
+          <div class="count" id="count-ben">0</div>
+          <div class="percentage" id="percent-ben">0/50 (0%)</div>
+        </div>
+        <div class="stat-card">
+          <h3><span class="color-indicator" style="background: #ff69b4;"></span>Matt</h3>
+          <div class="count" id="count-matt">0</div>
+          <div class="percentage" id="percent-matt">0/50 (0%)</div>
+        </div>
+        <div class="stat-card">
+          <h3><span class="color-indicator" style="background: #90ee90;"></span>Both (Separately)</h3>
+          <div class="count" id="count-both">0</div>
+          <div class="percentage" id="percent-both">0/50 (0%)</div>
+        </div>
+        <div class="stat-card">
+          <h3><span class="color-indicator" style="background: #87ceeb;"></span>Together</h3>
+          <div class="count" id="count-together">0</div>
+          <div class="percentage" id="percent-together">0/50 (0%)</div>
+        </div>
+      </div>
+
+      <div class="map-container">
+        <svg id="map" viewBox="0 0 959 593" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="dropdown" id="dropdown">
+    <div class="dropdown-item" data-status="none">
+      <span class="color-indicator" style="background: #e0e0e0;"></span>
+      None
+    </div>
+    <div class="dropdown-item" data-status="ben">
+      <span class="color-indicator" style="background: #ffd700;"></span>
+      Ben
+    </div>
+    <div class="dropdown-item" data-status="matt">
+      <span class="color-indicator" style="background: #ff69b4;"></span>
+      Matt
+    </div>
+    <div class="dropdown-item" data-status="both">
+      <span class="color-indicator" style="background: #90ee90;"></span>
+      Both (Separately)
+    </div>
+    <div class="dropdown-item" data-status="together">
+      <span class="color-indicator" style="background: #87ceeb;"></span>
+      Together
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script src="./state_paths.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
