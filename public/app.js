@@ -494,15 +494,6 @@ function updateStats() {
     `${counts.together}/50 (${Math.round(counts.together / 50 * 100)}%)`;
 }
 
-// Handle stat card clicks
-document.querySelectorAll('.stat-card.clickable').forEach(card => {
-  card.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const category = card.dataset.category;
-    showStatesList(category);
-  });
-});
-
 // Show states list modal
 function showStatesList(category) {
   const visitedStates = [];
@@ -608,4 +599,13 @@ statesListModalOverlay.addEventListener('click', (e) => {
   await loadData();
   loadMap();
   setLoading(false);
+
+  // Attach stat card click handlers after content is loaded
+  document.querySelectorAll('.stat-card.clickable').forEach(card => {
+    card.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const category = card.dataset.category;
+      showStatesList(category);
+    });
+  });
 })();
