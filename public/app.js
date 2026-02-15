@@ -34,6 +34,10 @@ const cancelNamesBtn = document.getElementById('cancelNamesBtn');
 const saveNamesBtn = document.getElementById('saveNamesBtn');
 const nameUser1 = document.getElementById('nameUser1');
 const nameUser2 = document.getElementById('nameUser2');
+const statesListModalOverlay = document.getElementById('statesListModalOverlay');
+const statesListTitle = document.getElementById('statesListTitle');
+const statesList = document.getElementById('statesList');
+const closeStatesListBtn = document.getElementById('closeStatesListBtn');
 const customizeColorsBtn = document.getElementById('customizeColorsBtn');
 const colorModalOverlay = document.getElementById('colorModalOverlay');
 const cancelColorBtn = document.getElementById('cancelColorBtn');
@@ -166,7 +170,7 @@ async function loadSettings() {
   }
 }
 
-// Save settings (colors) to API
+// Save settings to API
 async function saveSettings(key, value) {
   try {
     const response = await fetch(`${API_URL}/settings`, {
@@ -489,6 +493,104 @@ function updateStats() {
   document.getElementById('percent-together').textContent = 
     `${counts.together}/50 (${Math.round(counts.together / 50 * 100)}%)`;
 }
+
+// Handle stat card clicks
+document.querySelectorAll('.stat-card.clickable').forEach(card => {
+  card.addEventListener('click', () => {
+    const category = card.dataset.category;
+    showStatesList(category);
+  });
+});
+
+// Show states list modal
+function showStatesList(category) {
+  const visitedStates = [];
+
+  // Determine which states to show based on category
+  Object.keys(stateData).forEach(stateId => {
+    const status = stateData[stateId];
+    let visitType = null;
+
+    if (category === 'user1') {
+      if (status === 'ben') {
+        visitType = 'Individual';
+      } else if (status === 'both') {
+        visitType = 'Separately';
+      } else if (status === 'together') {
+        visitType = 'Together';
+      }
+    } else if (category === 'user2') {
+      if (status === 'matt') {
+        visitType = 'Individual';
+      } else if (status === 'both') {
+        visitType = 'Separately';
+      } else if (status === 'together') {
+        visitType = 'Together';
+      }
+    } else if (category === 'both' && status === 'both') {
+      visitType = null; // No indicator needed for "Both" category
+    } else if (category === 'together' && status === 'together') {
+      visitType = null; // No indicator needed for "Together" category
+    }
+
+    if (visitType !== null || (category === 'both' && status === 'both') || (category === 'together' && status === 'together')) {
+      visitedStates.push({
+        id: stateId,
+        name: STATE_NAMES[stateId],
+        visitType
+      });
+    }
+  });
+
+  // Sort states alphabetically
+  visitedStates.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Set modal title
+  if (category === 'user1') {
+    statesListTitle.textContent = `${customNames.user1} - Visited States`;
+  } else if (category === 'user2') {
+    statesListTitle.textContent = `${customNames.user2} - Visited States`;
+  } else if (category === 'both') {
+    statesListTitle.textContent = 'Both (Separately) - Visited States';
+  } else if (category === 'together') {
+    statesListTitle.textContent = 'Together - Visited States';
+  }
+
+  // Populate states list
+  statesList.innerHTML = '';
+  visitedStates.forEach(state => {
+    const stateItem = document.createElement('div');
+    stateItem.className = 'state-item';
+
+    const stateName = document.createElement('span');
+    stateName.className = 'state-name';
+    stateName.textContent = state.name;
+    stateItem.appendChild(stateName);
+
+    if (state.visitType) {
+      const visitType = document.createElement('span');
+      visitType.className = 'visit-type';
+      visitType.textContent = state.visitType;
+      stateItem.appendChild(visitType);
+    }
+
+    statesList.appendChild(stateItem);
+  });
+
+  statesListModalOverlay.classList.add('show');
+}
+
+// Close states list modal
+closeStatesListBtn.addEventListener('click', () => {
+  statesListModalOverlay.classList.remove('show');
+});
+
+// Close states list modal when clicking overlay
+statesListModalOverlay.addEventListener('click', (e) => {
+  if (e.target === statesListModalOverlay) {
+    statesListModalOverlay.classList.remove('show');
+  }
+});
 
 // Initialize app
 (async () => {

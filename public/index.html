@@ -64,22 +64,22 @@
     <!-- Main Content (hidden until loaded) -->
     <div id="mainContent" class="hidden">
       <div class="stats">
-        <div class="stat-card">
+        <div class="stat-card clickable" data-category="user1">
           <h3><span class="color-indicator" style="background: #ffd700;"></span><span id="name-user1">User 1</span></h3>
           <div class="count" id="count-ben">0</div>
           <div class="percentage" id="percent-ben">0/50 (0%)</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card clickable" data-category="user2">
           <h3><span class="color-indicator" style="background: #ff69b4;"></span><span id="name-user2">User 2</span></h3>
           <div class="count" id="count-matt">0</div>
           <div class="percentage" id="percent-matt">0/50 (0%)</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card clickable" data-category="both">
           <h3><span class="color-indicator" style="background: #90ee90;"></span>Both (Separately)</h3>
           <div class="count" id="count-both">0</div>
           <div class="percentage" id="percent-both">0/50 (0%)</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card clickable" data-category="together">
           <h3><span class="color-indicator" style="background: #87ceeb;"></span>Together</h3>
           <div class="count" id="count-together">0</div>
           <div class="percentage" id="percent-together">0/50 (0%)</div>
@@ -119,6 +119,17 @@
 
   <!-- Toast Notification -->
   <div class="toast hidden" id="statusMessage"></div>
+
+  <!-- States List Modal -->
+  <div class="modal-overlay" id="statesListModalOverlay">
+    <div class="modal states-list-modal">
+      <h2 id="statesListTitle">Visited States</h2>
+      <div class="states-list" id="statesList"></div>
+      <div class="modal-actions">
+        <button class="btn" id="closeStatesListBtn">Close</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Reset Confirmation Modal -->
   <div class="modal-overlay" id="modalOverlay">
