@@ -225,8 +225,20 @@ svg {
 }
 
 .state-path:hover {
-  filter: brightness(1.1);
   stroke-width: 1.5;
+}
+
+/* Hover effect for colored states - make slightly brighter */
+.state-path.status-ben:hover,
+.state-path.status-matt:hover,
+.state-path.status-both:hover,
+.state-path.status-together:hover {
+  filter: brightness(1.1);
+}
+
+/* Hover effect for unvisited states - make slightly darker */
+.state-path:not(.status-ben):not(.status-matt):not(.status-both):not(.status-together):hover {
+  fill: #d0d0d0;
 }
 
 /* Default status colors - can be overridden by custom colors */
@@ -377,16 +389,22 @@ input[type="file"] {
   animation: fadeIn 0.2s ease;
 }
 
+
+
 .settings-item {
   padding: 12px 20px;
   cursor: pointer;
   font-size: 15px;
-  color: #d32f2f;
+  color: #000;
   display: flex;
   align-items: center;
   gap: 12px;
   transition: background 0.2s ease;
   font-weight: 500;
+}
+
+.settings-item.danger {
+  color: #d32f2f;
 }
 
 .settings-item:hover {
