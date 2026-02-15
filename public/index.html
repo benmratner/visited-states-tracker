@@ -3,13 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>US State Travel Tracker</title>
+  <title>Journey Atlas · US State Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <div class="background-pattern"></div>
+
   <div class="container">
     <div class="header">
-      <h1>US State Travel Tracker</h1>
+      <div class="brand">
+        <svg class="compass-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
+        <h1>Journey Atlas</h1>
+      </div>
       <div class="settings-wrapper">
         <button class="settings-btn" id="settingsBtn">
           <svg width="24" height="24" viewBox="0 0 472.615 472.615" fill="currentColor">
@@ -63,6 +74,11 @@
 
     <!-- Main Content (hidden until loaded) -->
     <div id="mainContent" class="hidden">
+      <div class="section-header">
+        <h2>Travel Progress</h2>
+        <p class="section-subtitle">Track your journey across America</p>
+      </div>
+
       <div class="stats">
         <div class="stat-card clickable" data-category="user1">
           <h3><span class="color-indicator" style="background: #ffd700;"></span><span id="name-user1">User 1</span></h3>
