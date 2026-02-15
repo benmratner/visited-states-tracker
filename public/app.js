@@ -32,7 +32,6 @@ const customizeNamesBtn = document.getElementById('customizeNamesBtn');
 const namesModalOverlay = document.getElementById('namesModalOverlay');
 const cancelNamesBtn = document.getElementById('cancelNamesBtn');
 const saveNamesBtn = document.getElementById('saveNamesBtn');
-const resetNamesToDefaultBtn = document.getElementById('resetNamesToDefaultBtn');
 const nameUser1 = document.getElementById('nameUser1');
 const nameUser2 = document.getElementById('nameUser2');
 const customizeColorsBtn = document.getElementById('customizeColorsBtn');
@@ -333,12 +332,6 @@ namesModalOverlay.addEventListener('click', (e) => {
   if (e.target === namesModalOverlay) {
     namesModalOverlay.classList.remove('show');
   }
-});
-
-// Reset names to default
-resetNamesToDefaultBtn.addEventListener('click', () => {
-  nameUser1.value = DEFAULT_NAMES.user1;
-  nameUser2.value = DEFAULT_NAMES.user2;
 });
 
 // Save custom names
