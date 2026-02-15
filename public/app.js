@@ -582,8 +582,14 @@ function showStatesList(category) {
 }
 
 // Close states list modal
-closeStatesListBtn.addEventListener('click', () => {
+closeStatesListBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
   statesListModalOverlay.classList.remove('show');
+});
+
+// Prevent clicks inside modal from closing it
+document.querySelector('.states-list-modal')?.addEventListener('click', (e) => {
+  e.stopPropagation();
 });
 
 // Close states list modal when clicking overlay
