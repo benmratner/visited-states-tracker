@@ -375,10 +375,6 @@ h1 {
   border: 1.5px solid white;
 }
 
-.stat-card .count {
-  display: none;
-}
-
 .stat-card .percentage {
   font-family: var(--font-display);
   font-size: 2rem;
