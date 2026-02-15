@@ -84,12 +84,18 @@ function setLoading(isLoading) {
   }
 }
 
-// Show status message
+// Show toast notification
 function showStatus(message, isError = false) {
   statusMessage.textContent = message;
-  statusMessage.className = isError ? 'status-message error' : 'status-message success';
+  statusMessage.className = isError ? 'toast error' : 'toast success';
+
+  // Auto-hide after 3 seconds with slide-out animation
   setTimeout(() => {
-    statusMessage.className = 'status-message hidden';
+    statusMessage.style.animation = 'slideOutRight 0.3s ease';
+    setTimeout(() => {
+      statusMessage.className = 'toast hidden';
+      statusMessage.style.animation = '';
+    }, 300);
   }, 3000);
 }
 
