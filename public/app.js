@@ -634,14 +634,12 @@ statesListModalOverlay.addEventListener('click', (e) => {
 // Handle sort option changes
 document.querySelectorAll('.sort-chip').forEach(chip => {
   chip.addEventListener('click', (e) => {
-    // Update active state immediately
+    // Update active state
     document.querySelectorAll('.sort-chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
 
-    // Defer list rendering to allow browser to paint the chip state first
-    requestAnimationFrame(() => {
-      renderStatesList(chip.dataset.sort);
-    });
+    // Re-render list with new sort order
+    renderStatesList(chip.dataset.sort);
   });
 });
 

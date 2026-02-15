@@ -837,11 +837,11 @@ svg {
   font-weight: 500;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s var(--transition-fast);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   font-family: var(--font-body);
 }
 
-.sort-chip:hover {
+.sort-chip:hover:not(.active) {
   background: rgba(44, 51, 51, 0.03);
   border-color: rgba(44, 51, 51, 0.25);
   color: var(--text-primary);
@@ -851,6 +851,7 @@ svg {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
   color: white;
+  transition: none;
 }
 
 .states-list {
