@@ -38,6 +38,11 @@ const statesListModalOverlay = document.getElementById('statesListModalOverlay')
 const statesListTitle = document.getElementById('statesListTitle');
 const statesList = document.getElementById('statesList');
 const closeStatesListBtn = document.getElementById('closeStatesListBtn');
+const sortControls = document.getElementById('sortControls');
+
+// Track current modal state for re-rendering
+let currentModalCategory = null;
+let currentVisitedStates = [];
 const customizeColorsBtn = document.getElementById('customizeColorsBtn');
 const colorModalOverlay = document.getElementById('colorModalOverlay');
 const cancelColorBtn = document.getElementById('cancelColorBtn');
@@ -496,6 +501,7 @@ function updateStats() {
 
 // Show states list modal
 function showStatesList(category) {
+  currentModalCategory = category;
   const visitedStates = [];
 
   // Determine which states to show based on category
@@ -520,9 +526,9 @@ function showStatesList(category) {
         visitType = 'Together';
       }
     } else if (category === 'both' && status === 'both') {
-      visitType = null; // No indicator needed for "Both" category
+      visitType = null;
     } else if (category === 'together' && status === 'together') {
-      visitType = null; // No indicator needed for "Together" category
+      visitType = null;
     }
 
     if (visitType !== null || (category === 'both' && status === 'both') || (category === 'together' && status === 'together')) {
@@ -534,8 +540,7 @@ function showStatesList(category) {
     }
   });
 
-  // Sort states alphabetically
-  visitedStates.sort((a, b) => a.name.localeCompare(b.name));
+  currentVisitedStates = visitedStates;
 
   // Set modal title
   if (category === 'user1') {
@@ -548,28 +553,82 @@ function showStatesList(category) {
     statesListTitle.textContent = 'Together - Visited States';
   }
 
-  // Populate states list
-  statesList.innerHTML = '';
-  visitedStates.forEach(state => {
-    const stateItem = document.createElement('div');
-    stateItem.className = 'state-item';
+  // Show/hide sort controls based on category
+  if (category === 'user1' || category === 'user2') {
+    sortControls.classList.add('show');
+    // Reset to alphabetical sort
+    document.querySelector('input[name="stateSort"][value="alphabetical"]').checked = true;
+  } else {
+    sortControls.classList.remove('show');
+  }
 
-    const stateName = document.createElement('span');
-    stateName.className = 'state-name';
-    stateName.textContent = state.name;
-    stateItem.appendChild(stateName);
-
-    if (state.visitType) {
-      const visitType = document.createElement('span');
-      visitType.className = 'visit-type';
-      visitType.textContent = state.visitType;
-      stateItem.appendChild(visitType);
-    }
-
-    statesList.appendChild(stateItem);
-  });
+  // Render the list
+  renderStatesList('alphabetical');
 
   statesListModalOverlay.classList.add('show');
+}
+
+// Render states list based on sort order
+function renderStatesList(sortOrder) {
+  const states = [...currentVisitedStates];
+
+  if (sortOrder === 'alphabetical') {
+    // Sort alphabetically
+    states.sort((a, b) => a.name.localeCompare(b.name));
+
+    statesList.innerHTML = '';
+    states.forEach(state => {
+      statesList.appendChild(createStateItem(state));
+    });
+  } else if (sortOrder === 'visitType') {
+    // Group by visit type
+    const grouped = {
+      Individual: states.filter(s => s.visitType === 'Individual'),
+      Separately: states.filter(s => s.visitType === 'Separately'),
+      Together: states.filter(s => s.visitType === 'Together')
+    };
+
+    // Sort each group alphabetically
+    Object.values(grouped).forEach(group => {
+      group.sort((a, b) => a.name.localeCompare(b.name));
+    });
+
+    statesList.innerHTML = '';
+
+    // Render each group
+    ['Individual', 'Separately', 'Together'].forEach(type => {
+      if (grouped[type].length > 0) {
+        const header = document.createElement('div');
+        header.className = 'visit-type-header';
+        header.textContent = `${type} (${grouped[type].length})`;
+        statesList.appendChild(header);
+
+        grouped[type].forEach(state => {
+          statesList.appendChild(createStateItem(state, true));
+        });
+      }
+    });
+  }
+}
+
+// Create a state item element
+function createStateItem(state, hideVisitType = false) {
+  const stateItem = document.createElement('div');
+  stateItem.className = 'state-item';
+
+  const stateName = document.createElement('span');
+  stateName.className = 'state-name';
+  stateName.textContent = state.name;
+  stateItem.appendChild(stateName);
+
+  if (state.visitType && !hideVisitType) {
+    const visitType = document.createElement('span');
+    visitType.className = 'visit-type';
+    visitType.textContent = state.visitType;
+    stateItem.appendChild(visitType);
+  }
+
+  return stateItem;
 }
 
 // Close states list modal
@@ -588,6 +647,13 @@ statesListModalOverlay.addEventListener('click', (e) => {
   if (e.target === statesListModalOverlay) {
     statesListModalOverlay.classList.remove('show');
   }
+});
+
+// Handle sort option changes
+document.querySelectorAll('input[name="stateSort"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    renderStatesList(e.target.value);
+  });
 });
 
 // Initialize app
