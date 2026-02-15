@@ -496,7 +496,8 @@ function updateStats() {
 
 // Handle stat card clicks
 document.querySelectorAll('.stat-card.clickable').forEach(card => {
-  card.addEventListener('click', () => {
+  card.addEventListener('click', (e) => {
+    e.stopPropagation();
     const category = card.dataset.category;
     showStatesList(category);
   });
