@@ -503,6 +503,17 @@ svg {
   pointer-events: auto;
 }
 
+.dropdown-header {
+  padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-xs);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(44, 51, 51, 0.1);
+  margin-bottom: var(--spacing-xs);
+}
+
 .dropdown-item {
   padding: var(--spacing-sm);
   cursor: pointer;

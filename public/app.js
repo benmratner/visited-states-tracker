@@ -17,6 +17,7 @@ let stateData = {};
 let currentState = null;
 
 const dropdown = document.getElementById('dropdown');
+const dropdownHeader = document.getElementById('dropdownHeader');
 const tooltip = document.getElementById('tooltip');
 const mapSvg = document.getElementById('map');
 const statusMessage = document.getElementById('statusMessage');
@@ -263,7 +264,10 @@ function updateStateColor(path, stateId) {
 function handleStateClick(e) {
   e.stopPropagation();
   currentState = e.target.getAttribute('id');
-  
+
+  // Set the dropdown header to show the state name
+  dropdownHeader.textContent = STATE_NAMES[currentState];
+
   dropdown.style.left = `${e.clientX}px`;
   dropdown.style.top = `${e.clientY}px`;
   dropdown.classList.add('show');
