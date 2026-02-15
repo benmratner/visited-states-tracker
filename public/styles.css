@@ -457,6 +457,15 @@ input[type="file"] {
   justify-content: flex-end;
 }
 
+.modal .btn-secondary {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.modal .btn-secondary:hover {
+  background: #e0e0e0;
+}
+
 .btn-danger {
   background: #d32f2f;
   color: white;
