@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Journey Atlas · US State Tracker</title>
+  <title id="pageTitle">State Tracker</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
           <circle cx="12" cy="12" r="10"></circle>
           <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
         </svg>
-        <h1>Journey Atlas</h1>
+        <h1 id="appTitle">State Tracker</h1>
       </div>
       <div class="settings-wrapper">
         <button class="settings-btn" id="settingsBtn">
@@ -74,11 +74,6 @@
 
     <!-- Main Content (hidden until loaded) -->
     <div id="mainContent" class="hidden">
-      <div class="section-header">
-        <h2>Travel Progress</h2>
-        <p class="section-subtitle">Track your journey across America</p>
-      </div>
-
       <div class="map-container">
         <svg id="map" viewBox="0 0 959 593" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>

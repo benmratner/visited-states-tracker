@@ -23,6 +23,8 @@ const mapSvg = document.getElementById('map');
 const statusMessage = document.getElementById('statusMessage');
 const loadingSpinner = document.getElementById('loadingSpinner');
 const mainContent = document.getElementById('mainContent');
+const pageTitle = document.getElementById('pageTitle');
+const appTitle = document.getElementById('appTitle');
 const settingsBtn = document.getElementById('settingsBtn');
 const settingsMenu = document.getElementById('settingsMenu');
 const resetDataBtn = document.getElementById('resetDataBtn');
@@ -76,6 +78,11 @@ let customNames = { ...DEFAULT_NAMES };
 
 // Apply custom names
 function applyCustomNames() {
+  // Update page title and app title
+  const titleText = `${customNames.user1} and ${customNames.user2}'s State Tracker`;
+  pageTitle.textContent = titleText;
+  appTitle.textContent = titleText;
+
   // Update stat cards
   document.getElementById('name-user1').textContent = customNames.user1;
   document.getElementById('name-user2').textContent = customNames.user2;
