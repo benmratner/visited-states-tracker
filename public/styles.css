@@ -229,10 +229,11 @@ svg {
   stroke-width: 1.5;
 }
 
-.status-ben { fill: #ffd700; }
-.status-matt { fill: #ff69b4; }
-.status-both { fill: #90ee90; }
-.status-together { fill: #87ceeb; }
+/* Default status colors - can be overridden by custom colors */
+.status-ben { fill: var(--color-ben, #ffd700); }
+.status-matt { fill: var(--color-matt, #ff69b4); }
+.status-both { fill: var(--color-both, #90ee90); }
+.status-together { fill: var(--color-together, #87ceeb); }
 
 /* Dropdown Menu */
 .dropdown {
@@ -473,6 +474,46 @@ input[type="file"] {
 
 .btn-danger:hover {
   background: #b71c1c;
+}
+
+/* Color Customization Modal */
+.color-modal {
+  max-width: 500px;
+}
+
+.color-options {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.color-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.color-option label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.color-option input[type="color"] {
+  width: 60px;
+  height: 40px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.color-option input[type="color"]:hover {
+  border-color: #667eea;
 }
 
 /* Responsive Design */

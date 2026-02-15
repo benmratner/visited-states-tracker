@@ -28,6 +28,49 @@ const resetDataBtn = document.getElementById('resetDataBtn');
 const modalOverlay = document.getElementById('modalOverlay');
 const cancelBtn = document.getElementById('cancelBtn');
 const confirmResetBtn = document.getElementById('confirmResetBtn');
+const customizeColorsBtn = document.getElementById('customizeColorsBtn');
+const colorModalOverlay = document.getElementById('colorModalOverlay');
+const cancelColorBtn = document.getElementById('cancelColorBtn');
+const saveColorsBtn = document.getElementById('saveColorsBtn');
+const colorBen = document.getElementById('colorBen');
+const colorMatt = document.getElementById('colorMatt');
+const colorBoth = document.getElementById('colorBoth');
+const colorTogether = document.getElementById('colorTogether');
+
+// Default colors
+const DEFAULT_COLORS = {
+  ben: '#ffd700',
+  matt: '#ff69b4',
+  both: '#90ee90',
+  together: '#87ceeb'
+};
+
+// Load custom colors from localStorage or use defaults
+let customColors = JSON.parse(localStorage.getItem('stateColors')) || { ...DEFAULT_COLORS };
+
+// Apply custom colors
+function applyCustomColors() {
+  // Update CSS custom properties
+  document.documentElement.style.setProperty('--color-ben', customColors.ben);
+  document.documentElement.style.setProperty('--color-matt', customColors.matt);
+  document.documentElement.style.setProperty('--color-both', customColors.both);
+  document.documentElement.style.setProperty('--color-together', customColors.together);
+
+  // Update stat card color indicators
+  document.querySelectorAll('.stat-card').forEach((card, index) => {
+    const indicator = card.querySelector('.color-indicator');
+    if (indicator) {
+      const colors = [customColors.ben, customColors.matt, customColors.both, customColors.together];
+      indicator.style.background = colors[index];
+    }
+  });
+
+  // Update dropdown color indicators
+  document.querySelector('[data-status="ben"] .color-indicator').style.background = customColors.ben;
+  document.querySelector('[data-status="matt"] .color-indicator').style.background = customColors.matt;
+  document.querySelector('[data-status="both"] .color-indicator').style.background = customColors.both;
+  document.querySelector('[data-status="together"] .color-indicator').style.background = customColors.together;
+}
 
 // Show/hide loading state
 function setLoading(isLoading) {
@@ -124,6 +167,10 @@ function updateStateColor(path, stateId) {
   path.classList.remove('status-ben', 'status-matt', 'status-both', 'status-together');
   if (status !== 'none') {
     path.classList.add(`status-${status}`);
+    // Apply custom color
+    path.style.fill = customColors[status];
+  } else {
+    path.style.fill = '';
   }
 }
 
@@ -224,6 +271,51 @@ confirmResetBtn.addEventListener('click', async () => {
   }
 });
 
+// Customize colors button
+customizeColorsBtn.addEventListener('click', () => {
+  settingsMenu.classList.remove('show');
+
+  // Load current colors into inputs
+  colorBen.value = customColors.ben;
+  colorMatt.value = customColors.matt;
+  colorBoth.value = customColors.both;
+  colorTogether.value = customColors.together;
+
+  colorModalOverlay.classList.add('show');
+});
+
+// Cancel color customization
+cancelColorBtn.addEventListener('click', () => {
+  colorModalOverlay.classList.remove('show');
+});
+
+// Close color modal when clicking overlay
+colorModalOverlay.addEventListener('click', (e) => {
+  if (e.target === colorModalOverlay) {
+    colorModalOverlay.classList.remove('show');
+  }
+});
+
+// Save custom colors
+saveColorsBtn.addEventListener('click', () => {
+  customColors = {
+    ben: colorBen.value,
+    matt: colorMatt.value,
+    both: colorBoth.value,
+    together: colorTogether.value
+  };
+
+  // Save to localStorage
+  localStorage.setItem('stateColors', JSON.stringify(customColors));
+
+  // Apply colors
+  applyCustomColors();
+  loadMap();
+
+  colorModalOverlay.classList.remove('show');
+  showStatus('Colors saved successfully!');
+});
+
 function updateStats() {
   const counts = {
     ben: 0,
@@ -268,6 +360,7 @@ function updateStats() {
 // Initialize app
 (async () => {
   setLoading(true);
+  applyCustomColors();
   await loadData();
   loadMap();
   setLoading(false);
