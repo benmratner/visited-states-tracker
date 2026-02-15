@@ -28,6 +28,13 @@ const resetDataBtn = document.getElementById('resetDataBtn');
 const modalOverlay = document.getElementById('modalOverlay');
 const cancelBtn = document.getElementById('cancelBtn');
 const confirmResetBtn = document.getElementById('confirmResetBtn');
+const customizeNamesBtn = document.getElementById('customizeNamesBtn');
+const namesModalOverlay = document.getElementById('namesModalOverlay');
+const cancelNamesBtn = document.getElementById('cancelNamesBtn');
+const saveNamesBtn = document.getElementById('saveNamesBtn');
+const resetNamesToDefaultBtn = document.getElementById('resetNamesToDefaultBtn');
+const nameUser1 = document.getElementById('nameUser1');
+const nameUser2 = document.getElementById('nameUser2');
 const customizeColorsBtn = document.getElementById('customizeColorsBtn');
 const colorModalOverlay = document.getElementById('colorModalOverlay');
 const cancelColorBtn = document.getElementById('cancelColorBtn');
@@ -46,8 +53,32 @@ const DEFAULT_COLORS = {
   together: '#87ceeb'
 };
 
+// Default names
+const DEFAULT_NAMES = {
+  user1: 'User 1',
+  user2: 'User 2'
+};
+
 // Custom colors (loaded from database)
 let customColors = { ...DEFAULT_COLORS };
+
+// Custom names (loaded from database)
+let customNames = { ...DEFAULT_NAMES };
+
+// Apply custom names
+function applyCustomNames() {
+  // Update stat cards
+  document.getElementById('name-user1').textContent = customNames.user1;
+  document.getElementById('name-user2').textContent = customNames.user2;
+
+  // Update dropdown
+  document.getElementById('dropdown-user1').textContent = customNames.user1;
+  document.getElementById('dropdown-user2').textContent = customNames.user2;
+
+  // Update color modal labels
+  document.getElementById('colorLabel-user1').textContent = customNames.user1;
+  document.getElementById('colorLabel-user2').textContent = customNames.user2;
+}
 
 // Apply custom colors
 function applyCustomColors() {
@@ -113,7 +144,7 @@ async function loadData() {
   }
 }
 
-// Load settings (colors) from API
+// Load settings (colors and names) from API
 async function loadSettings() {
   try {
     const response = await fetch(`${API_URL}/settings`);
@@ -123,11 +154,16 @@ async function loadSettings() {
     if (settings.colors) {
       customColors = settings.colors;
     }
+    if (settings.names) {
+      customNames = settings.names;
+    }
     console.log('Loaded colors:', customColors);
+    console.log('Loaded names:', customNames);
   } catch (error) {
     console.error('Error loading settings:', error);
-    // Use default colors if loading fails
+    // Use defaults if loading fails
     customColors = { ...DEFAULT_COLORS };
+    customNames = { ...DEFAULT_NAMES };
   }
 }
 
@@ -276,6 +312,60 @@ settingsBtn.addEventListener('click', (e) => {
   settingsMenu.classList.toggle('show');
 });
 
+// Customize names button
+customizeNamesBtn.addEventListener('click', () => {
+  settingsMenu.classList.remove('show');
+
+  // Load current names into inputs
+  nameUser1.value = customNames.user1;
+  nameUser2.value = customNames.user2;
+
+  namesModalOverlay.classList.add('show');
+});
+
+// Cancel names customization
+cancelNamesBtn.addEventListener('click', () => {
+  namesModalOverlay.classList.remove('show');
+});
+
+// Close names modal when clicking overlay
+namesModalOverlay.addEventListener('click', (e) => {
+  if (e.target === namesModalOverlay) {
+    namesModalOverlay.classList.remove('show');
+  }
+});
+
+// Reset names to default
+resetNamesToDefaultBtn.addEventListener('click', () => {
+  nameUser1.value = DEFAULT_NAMES.user1;
+  nameUser2.value = DEFAULT_NAMES.user2;
+});
+
+// Save custom names
+saveNamesBtn.addEventListener('click', async () => {
+  const name1 = nameUser1.value.trim();
+  const name2 = nameUser2.value.trim();
+
+  if (!name1 || !name2) {
+    showStatus('Names cannot be empty', true);
+    return;
+  }
+
+  customNames = {
+    user1: name1,
+    user2: name2
+  };
+
+  // Save to database
+  await saveSettings('names', customNames);
+
+  // Apply names
+  applyCustomNames();
+
+  namesModalOverlay.classList.remove('show');
+  showStatus('Names saved successfully!');
+});
+
 // Reset data button
 resetDataBtn.addEventListener('click', () => {
   settingsMenu.classList.remove('show');
@@ -411,6 +501,7 @@ function updateStats() {
 (async () => {
   setLoading(true);
   await loadSettings();
+  applyCustomNames();
   applyCustomColors();
   await loadData();
   loadMap();

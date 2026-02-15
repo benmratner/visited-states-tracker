@@ -550,6 +550,42 @@ input[type="file"] {
   border-color: #667eea;
 }
 
+/* Name Customization Modal */
+.name-options {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.name-option {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.name-option label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.name-option input[type="text"] {
+  padding: 12px 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: border-color 0.2s ease;
+}
+
+.name-option input[type="text"]:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   body {

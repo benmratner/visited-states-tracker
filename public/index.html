@@ -25,6 +25,13 @@
         </button>
         <!-- Settings Menu -->
         <div class="settings-menu" id="settingsMenu">
+          <div class="settings-item" id="customizeNamesBtn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Customize Names
+          </div>
           <div class="settings-item" id="customizeColorsBtn">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
@@ -58,12 +65,12 @@
     <div id="mainContent" class="hidden">
       <div class="stats">
         <div class="stat-card">
-          <h3><span class="color-indicator" style="background: #ffd700;"></span>Ben</h3>
+          <h3><span class="color-indicator" style="background: #ffd700;"></span><span id="name-user1">User 1</span></h3>
           <div class="count" id="count-ben">0</div>
           <div class="percentage" id="percent-ben">0/50 (0%)</div>
         </div>
         <div class="stat-card">
-          <h3><span class="color-indicator" style="background: #ff69b4;"></span>Matt</h3>
+          <h3><span class="color-indicator" style="background: #ff69b4;"></span><span id="name-user2">User 2</span></h3>
           <div class="count" id="count-matt">0</div>
           <div class="percentage" id="percent-matt">0/50 (0%)</div>
         </div>
@@ -92,11 +99,11 @@
     </div>
     <div class="dropdown-item" data-status="ben">
       <span class="color-indicator" style="background: #ffd700;"></span>
-      Ben
+      <span id="dropdown-user1">User 1</span>
     </div>
     <div class="dropdown-item" data-status="matt">
       <span class="color-indicator" style="background: #ff69b4;"></span>
-      Matt
+      <span id="dropdown-user2">User 2</span>
     </div>
     <div class="dropdown-item" data-status="both">
       <span class="color-indicator" style="background: #90ee90;"></span>
@@ -125,6 +132,32 @@
     </div>
   </div>
 
+  <!-- Names Customization Modal -->
+  <div class="modal-overlay" id="namesModalOverlay">
+    <div class="modal">
+      <h2>Customize Names</h2>
+      <p>Enter names for the two users</p>
+
+      <div class="name-options">
+        <div class="name-option">
+          <label for="nameUser1">User 1</label>
+          <input type="text" id="nameUser1" value="User 1" maxlength="30" placeholder="Enter name">
+        </div>
+        <div class="name-option">
+          <label for="nameUser2">User 2</label>
+          <input type="text" id="nameUser2" value="User 2" maxlength="30" placeholder="Enter name">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="resetNamesToDefaultBtn">Reset to Default</button>
+        <div style="flex: 1;"></div>
+        <button class="btn btn-secondary" id="cancelNamesBtn">Cancel</button>
+        <button class="btn" id="saveNamesBtn">Save Names</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Color Customization Modal -->
   <div class="modal-overlay" id="colorModalOverlay">
     <div class="modal color-modal">
@@ -133,11 +166,11 @@
 
       <div class="color-options">
         <div class="color-option">
-          <label for="colorBen">Ben</label>
+          <label for="colorBen"><span id="colorLabel-user1">User 1</span></label>
           <input type="color" id="colorBen" value="#ffd700">
         </div>
         <div class="color-option">
-          <label for="colorMatt">Matt</label>
+          <label for="colorMatt"><span id="colorLabel-user2">User 2</span></label>
           <input type="color" id="colorMatt" value="#ff69b4">
         </div>
         <div class="color-option">
