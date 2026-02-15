@@ -45,8 +45,8 @@ const DEFAULT_COLORS = {
   together: '#87ceeb'
 };
 
-// Load custom colors from localStorage or use defaults
-let customColors = JSON.parse(localStorage.getItem('stateColors')) || { ...DEFAULT_COLORS };
+// Custom colors (loaded from database)
+let customColors = { ...DEFAULT_COLORS };
 
 // Apply custom colors
 function applyCustomColors() {
@@ -103,6 +103,41 @@ async function loadData() {
     console.error('Error loading data:', error);
     showStatus('Failed to load data from server', true);
     stateData = {};
+  }
+}
+
+// Load settings (colors) from API
+async function loadSettings() {
+  try {
+    const response = await fetch(`${API_URL}/settings`);
+    if (!response.ok) throw new Error('Failed to load settings');
+    const settings = await response.json();
+
+    if (settings.colors) {
+      customColors = settings.colors;
+    }
+    console.log('Loaded colors:', customColors);
+  } catch (error) {
+    console.error('Error loading settings:', error);
+    // Use default colors if loading fails
+    customColors = { ...DEFAULT_COLORS };
+  }
+}
+
+// Save settings (colors) to API
+async function saveSettings(key, value) {
+  try {
+    const response = await fetch(`${API_URL}/settings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, value })
+    });
+
+    if (!response.ok) throw new Error('Failed to save settings');
+    console.log(`Saved ${key}:`, value);
+  } catch (error) {
+    console.error('Error saving settings:', error);
+    showStatus('Failed to save settings', true);
   }
 }
 
@@ -297,7 +332,7 @@ colorModalOverlay.addEventListener('click', (e) => {
 });
 
 // Save custom colors
-saveColorsBtn.addEventListener('click', () => {
+saveColorsBtn.addEventListener('click', async () => {
   customColors = {
     ben: colorBen.value,
     matt: colorMatt.value,
@@ -305,8 +340,8 @@ saveColorsBtn.addEventListener('click', () => {
     together: colorTogether.value
   };
 
-  // Save to localStorage
-  localStorage.setItem('stateColors', JSON.stringify(customColors));
+  // Save to database
+  await saveSettings('colors', customColors);
 
   // Apply colors
   applyCustomColors();
@@ -360,6 +395,7 @@ function updateStats() {
 // Initialize app
 (async () => {
   setLoading(true);
+  await loadSettings();
   applyCustomColors();
   await loadData();
   loadMap();

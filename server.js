@@ -18,11 +18,19 @@ const dbPath = path.join(dataDir, 'state-tracker.db');
 const db = new Database(dbPath);
 console.log(`📊 Database location: ${dbPath}`);
 
-// Create table if it doesn't exist
+// Create tables if they don't exist
 db.exec(`
   CREATE TABLE IF NOT EXISTS state_visits (
     state_id TEXT PRIMARY KEY,
     status TEXT NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS settings (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `);
@@ -103,6 +111,49 @@ app.post('/api/reset', (req, res) => {
   } catch (error) {
     console.error('Error resetting data:', error);
     res.status(500).json({ error: 'Failed to reset data' });
+  }
+});
+
+// Get settings (colors)
+app.get('/api/settings', (req, res) => {
+  try {
+    const stmt = db.prepare('SELECT key, value FROM settings');
+    const rows = stmt.all();
+
+    const settings = {};
+    rows.forEach(row => {
+      settings[row.key] = JSON.parse(row.value);
+    });
+
+    res.json(settings);
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    res.status(500).json({ error: 'Failed to fetch settings' });
+  }
+});
+
+// Save settings (colors)
+app.post('/api/settings', (req, res) => {
+  try {
+    const { key, value } = req.body;
+
+    if (!key || !value) {
+      return res.status(400).json({ error: 'Key and value are required' });
+    }
+
+    const stmt = db.prepare(`
+      INSERT INTO settings (key, value, updated_at)
+      VALUES (?, ?, CURRENT_TIMESTAMP)
+      ON CONFLICT(key) DO UPDATE SET
+        value = excluded.value,
+        updated_at = CURRENT_TIMESTAMP
+    `);
+
+    stmt.run(key, JSON.stringify(value));
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error saving settings:', error);
+    res.status(500).json({ error: 'Failed to save settings' });
   }
 });
 
