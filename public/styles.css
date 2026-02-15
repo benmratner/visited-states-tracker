@@ -355,7 +355,7 @@ h1 {
 
 .stat-card h3 {
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-tertiary);
   margin-bottom: var(--spacing-sm);
@@ -376,19 +376,16 @@ h1 {
 }
 
 .stat-card .count {
-  font-family: var(--font-display);
-  font-size: 2.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  line-height: 1;
-  margin-bottom: var(--spacing-xs);
-  letter-spacing: -0.02em;
+  display: none;
 }
 
 .stat-card .percentage {
-  font-size: 0.8125rem;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
 
 /* Staggered animation for stat cards */
